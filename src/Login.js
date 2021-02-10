@@ -6,6 +6,7 @@ import {
     Link
   } from "react-router-dom";
   import history from './history';
+  import axios from 'axios';
   
 
 class Login extends Component {
@@ -20,16 +21,11 @@ class Login extends Component {
 
         const data = {email: this.state.email,password: this.state.password};
 
-        fetch("http://localhost:8000/api/auth/login", {
-            method: 'post',
-            body: JSON.stringify(data),
-            headers: { "Content-Type": "application/json" }
-        })
-        .then(res => res.json())
+        axios.post("http://localhost:8000/api/auth/login", data)
         .then(res => console.log(res))
-        .catch(e => this.setState({errors:e.errors}))
+        .catch(e => this.setState({errors:e.response.data}))
 
-        history.push("/profile");
+        // history.push("/profile");
     }
 
     handleInput = (e)=>{
@@ -42,6 +38,8 @@ class Login extends Component {
     }
 
     render() {
+        const error = this.state.errors;
+
         return (
             <div className="flex">
                 <div className="w-1/3 p-4"></div>
@@ -51,6 +49,7 @@ class Login extends Component {
                         <div className="p-4">
                             <h1 className="text-lg border-b 
                                 border-gray-500">Ping here</h1>
+                                {error.errors ? <p className="text-red-500 text-small">{error.errors}</p> : ""}
                                 <div className="mt-4">
                                     <label>Email</label>
                                     <input type="email" name="email" 
