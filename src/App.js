@@ -1,8 +1,10 @@
 import './App.css';
 import './css/tailwind.css'
 import Login from './Login.js';
+import history from './history.js';
+import Profile from './Profile.js';
 import {
-  BrowserRouter as Router,
+  Router,
   Switch,
   Route,
   Link
@@ -10,10 +12,15 @@ import {
 
 function App() {
   return (
-    <Router>
+    <Router history={history}>
+      <div className="bg-gray-300 h-screen">
         <Route path="/login">
           <Login />
         </Route>
+        <Route path="/profile">
+          <Profile />
+        </Route>
+      </div>
     </Router>
   );
 }
