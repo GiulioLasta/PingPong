@@ -1,38 +1,32 @@
 import React, { Component } from 'react';
-// import {
-//     BrowserRouter as Router,
-//     Switch,
-//     Route,
-//     Link
-//   } from "react-router-dom";
-  import history from './history';
-  import axios from 'axios';
-  import cookie from 'js-cookie';
-  import {connect} from 'react-redux';
+import axios from 'axios';
+import cookie from 'js-cookie';
+import history from './history';
 
-class Login extends Component {
+class Register extends Component {
 
     constructor(props){
         super(props);
-        this.state = {email: '', password: '', errors: []};
+        this.state = {name: '', email: '', password: '', password_confirmation: '',  errors: []};
     }
 
     handleForm = (e) => {
         e.preventDefault();
 
-        const data = {email: this.state.email,password: this.state.password};
+        const data = {
+            name: this.state.name, 
+            email: this.state.email, 
+            password: this.state.password,
+            password_confirmation: this.state.password_confirmation
+        };
 
-        axios.post("http://localhost:8000/api/auth/login", data)
+        axios.post("http://localhost:8000/api/auth/register", data)
         .then(res => {
-            //console.log(res)
-            
             cookie.set('token', res.data.access_token);
-            // cookie.set('user', res.data.user);//set below not needed here
-
-            //dispatch
-            this.props.setLogin(res.data.user);
+            cookie.set('user', res.data.user);
 
             history.push("/profile");
+            //console.log(res)
         })
         .catch(e => this.setState({errors:e.response.data}))
 
@@ -62,6 +56,15 @@ class Login extends Component {
                                 border-gray-500">Ping here</h1>
                                 {error.errors ? <p className="text-red-500 text-small">{error.errors}</p> : ""}
                                 <div className="mt-4">
+                                    <label>Name</label>
+                                    <input type="text" name="name" 
+                                        placeholder="lovely name"
+                                        className="mt-1 p-2 bg-gray-200 rounded
+                                        border border-gray-400 w-full"
+                                        onChange={this.handleInput}></input>
+                                </div>
+                                
+                                <div className="mt-4">
                                     <label>Email</label>
                                     <input type="email" name="email" 
                                         placeholder="lovely email"
@@ -80,7 +83,17 @@ class Login extends Component {
                                 </div>
 
                                 <div className="mt-4">
+                                    <label>Confirm Password</label>
+                                    <input type="password_confirmation" name="password" 
+                                        placeholder="lovely password_confirmation"
+                                        className="mt-1 p-2 bg-gray-200 rounded
+                                        border border-gray-400 w-full"
+                                        onChange={this.handleInput}></input>
+                                </div>
+
+                                <div className="mt-4">
                                     <input type="submit" 
+                                        value="register"
                                         className="mt-1 p-2 w-full
                                         border border-gray-400 rounded
                                         cursor-pointer
@@ -95,13 +108,4 @@ class Login extends Component {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        setLogin: (user) => dispatch({
-            type:"SET_LOGIN",
-            payLoad: user
-        })
-    }
-};
-
-export default connect(null, mapDispatchToProps)(Login);
+export default Register;
