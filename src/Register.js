@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import cookie from 'js-cookie';
 import history from './history';
+import Error from './Components/Error';
 
 class Register extends Component {
 
@@ -28,7 +29,7 @@ class Register extends Component {
             history.push("/profile");
             //console.log(res)
         })
-        .catch(e => this.setState({errors:e.response.data}))
+        .catch(e => this.setState({errors:e.response.data.errors}))
 
         // history.push("/profile");
     }
@@ -54,7 +55,7 @@ class Register extends Component {
                         <div className="p-4">
                             <h1 className="text-lg border-b 
                                 border-gray-500">Ping here</h1>
-                                {error.errors ? <p className="text-red-500 text-small">{error.errors}</p> : ""}
+                                {/* {error.errors ? <p className="text-red-500 text-small">{error.errors}</p> : ""} */}
                                 <div className="mt-4">
                                     <label>Name</label>
                                     <input type="text" name="name" 
@@ -63,6 +64,7 @@ class Register extends Component {
                                         border border-gray-400 w-full"
                                         onChange={this.handleInput}></input>
                                 </div>
+                                <Error error={this.state.errors['name']?this.state.errors['name']:null}></Error>
                                 
                                 <div className="mt-4">
                                     <label>Email</label>
@@ -72,6 +74,7 @@ class Register extends Component {
                                         border border-gray-400 w-full"
                                         onChange={this.handleInput}></input>
                                 </div>
+                                <Error error={this.state.errors['email']?this.state.errors['email']:null}></Error>
                                 
                                 <div className="mt-4">
                                     <label>Password</label>
@@ -81,6 +84,7 @@ class Register extends Component {
                                         border border-gray-400 w-full"
                                         onChange={this.handleInput}></input>
                                 </div>
+                                <Error error={this.state.errors['password']?this.state.errors['password']:null}></Error>
 
                                 <div className="mt-4">
                                     <label>Confirm Password</label>
@@ -90,6 +94,7 @@ class Register extends Component {
                                         border border-gray-400 w-full"
                                         onChange={this.handleInput}></input>
                                 </div>
+                                <Error error={this.state.errors['password']?this.state.errors['password']:null}></Error>
 
                                 <div className="mt-4">
                                     <input type="submit" 

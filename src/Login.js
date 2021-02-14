@@ -9,12 +9,13 @@ import React, { Component } from 'react';
   import axios from 'axios';
   import cookie from 'js-cookie';
   import {connect} from 'react-redux';
+  import Error from './Components/Error';
 
 class Login extends Component {
 
     constructor(props){
         super(props);
-        this.state = {email: '', password: '', errors: []};
+        this.state = {email: '', password: '', errors: {}};
     }
 
     handleForm = (e) => {
@@ -34,7 +35,7 @@ class Login extends Component {
 
             history.push("/profile");
         })
-        .catch(e => this.setState({errors:e.response.data}))
+        .catch(e => this.setState({errors:e.response.data.errors}))
 
         // history.push("/profile");
     }
@@ -60,7 +61,8 @@ class Login extends Component {
                         <div className="p-4">
                             <h1 className="text-lg border-b 
                                 border-gray-500">Ping here</h1>
-                                {error.errors ? <p className="text-red-500 text-small">{error.errors}</p> : ""}
+                                <Error error={this.state.errors['result']?this.state.errors['result']:null}></Error>
+                                {/* {error.errors ? <p className="text-red-500 text-small">{error.errors}</p> : ""} */}
                                 <div className="mt-4">
                                     <label>Email</label>
                                     <input type="email" name="email" 
@@ -69,6 +71,7 @@ class Login extends Component {
                                         border border-gray-400 w-full"
                                         onChange={this.handleInput}></input>
                                 </div>
+                                <Error error={this.state.errors['email']?this.state.errors['email']:null}></Error>
                                 
                                 <div className="mt-4">
                                     <label>Password</label>
@@ -78,6 +81,7 @@ class Login extends Component {
                                         border border-gray-400 w-full"
                                         onChange={this.handleInput}></input>
                                 </div>
+                                <Error error={this.state.errors['password']?this.state.errors['password']:null}></Error>
 
                                 <div className="mt-4">
                                     <input type="submit" 
@@ -97,7 +101,7 @@ class Login extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setLogin: (user) => dispatch({
+        setLogin: user => dispatch({
             type:"SET_LOGIN",
             payLoad: user
         })
