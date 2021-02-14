@@ -14,9 +14,9 @@ function Layout(props) {
 
     return (
         <div>
-            <nav className="flex">
-                <h1 className="w-3/4 py-4 mx-10">Ping pong authentication</h1>
-                <div className="w-1/4 justify-end">
+            <nav className="flex justify-between">
+                <h1 className="py-4 mx-10">Ping pong authentication</h1>
+                <div className="flex justify-between">
                     {
                         !props.loggedIn ? 
                         <Fragment>
