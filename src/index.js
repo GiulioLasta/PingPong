@@ -24,7 +24,6 @@ if(token){
         cookie.remove("token");
       }
     }
-    console.log({decoded});
   });
 }
 
@@ -32,7 +31,6 @@ const render = () => {
   ReactDOM.render(
     <React.StrictMode>
       <Provider store={store}>
-        {/* {console.log("render")} */}
         <App />
       </Provider>
     </React.StrictMode>,
@@ -45,11 +43,10 @@ if(token){
   axios.post('http://localhost:8000/api/auth/me')
   .then(res => {
     //dispatch action
-    store.dispatch({type: "SET_LOGIN", payload:res.data })
-    // console.log("axios");
+    store.dispatch({type: "SET_LOGIN", payLoad:res.data });
+    //render only after data is retrieved
+    render();
   });
-
-  render();
 }else{
   render();
 }
